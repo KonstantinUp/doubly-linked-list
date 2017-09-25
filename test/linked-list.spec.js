@@ -61,7 +61,7 @@ describe('LinkedList', () => {
             list.append(1);
             list.append(123);
             list.append(444);
-
+                console.log(list);
             expect(list.at(0)).to.equal(1);
             expect(list.at(1)).to.equal(123);
             expect(list.at(2)).to.equal(444);
