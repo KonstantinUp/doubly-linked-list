@@ -40,19 +40,22 @@ class LinkedList {
     }
 
     insertAt(index, data) {
-          let newNode = new Node(data);
-          let count = 0;
-          let currentNode = this._head;
-          while (count<index){
-              currentNode =  currentNode.next;
+        let newNode = new Node(data);
+        let count = 0;
+        let currentNode = this._head;
+        while (count < index) {
+            currentNode = currentNode.next;
             count++;
         }
-         let beforeNode = currentNode.prev;
-         newNode.next = beforeNode.next;
-         beforeNode.next = newNode;
-         newNode.prev = beforeNode;
-          if(newNode.next != null)
+        let beforeNode = currentNode.prev;
+        if(!beforeNode && !currentNode.next){this._head = newNode;
+            this._tail = newNode;  this.length++; return this;}
+        newNode.next = beforeNode.next;
+        beforeNode.next = newNode;
+        newNode.prev = beforeNode;
+        if (newNode.next != null)
             newNode.next.prev = newNode;
+        this.length++;
         return this;
     }
 
@@ -68,13 +71,13 @@ class LinkedList {
         this.length = 0;
         this._head.data = null;
         this._tail.data = null;
+        return this;
     }
 
     deleteAt(index) {
         let currentNode = this._head;
         let loopIndex = 0;
         let beforeNodeToDelete = null;
-        let nodeToDelete = null;
         let afterNodeToDelete = null;
 
         while (loopIndex != index) {
@@ -82,16 +85,17 @@ class LinkedList {
             loopIndex++;
         }
         beforeNodeToDelete = currentNode.prev;
-        nodeToDelete = currentNode;
         afterNodeToDelete = currentNode.next;
+        if(!beforeNodeToDelete && !afterNodeToDelete ){ currentNode = null;return this;}
         beforeNodeToDelete.next = afterNodeToDelete;
         afterNodeToDelete.prev = beforeNodeToDelete;
-        nodeToDelete = null;
+        currentNode = null;
         this.length--;
         return this;
     }
 
     reverse() {
+        this._tail = this._head;
         while (this._head != null) {
             let temp = this._head.next;
             this._head.next = this._head.prev;
@@ -99,8 +103,9 @@ class LinkedList {
             if (!temp) {
                 break;
             }
-           this._head = temp;
+            this._head = temp;
         }
+        return this;
     }
 
     indexOf(value) {
@@ -108,12 +113,14 @@ class LinkedList {
             let currentNode = this._head;
             let counter = 0;
             while (currentNode && currentNode.data !== value) {
-                currentNode= currentNode.next;
+                currentNode = currentNode.next;
                 counter++;
             }
             if (counter === this.length) {
                 return -1
-            } else {return counter;}
+            } else {
+                return counter;
+            }
 
         }
 
@@ -121,4 +128,5 @@ class LinkedList {
     }
 
 }
+
 module.exports = LinkedList;
